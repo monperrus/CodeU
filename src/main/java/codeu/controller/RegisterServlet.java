@@ -16,5 +16,6 @@ public class RegisterServlet extends HttpServlet {
      throws IOException, ServletException {
 
    request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+   System.out.println();
  }
 }
