@@ -1,4 +1,5 @@
 package codeu.controller;
+package codeu.model;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
