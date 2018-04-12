@@ -35,7 +35,7 @@
     
     <dependency>
        <groupId>org.mindrot</groupId>
-       <artifactId>bcrypt</artifactId>
+       <artifactId>jbcrypt</artifactId>
        <version>0.4</version>
     </dependency>
 
