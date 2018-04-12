@@ -6,6 +6,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import codeu.model.store.basic.UserStore;
+import codeu.model.data.User;
+import java.util.UUID;
+import java.time.Instant;
+
 
 /**
  * Servlet class responsible for user registration.
