@@ -17,6 +17,9 @@ package codeu.controller;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
+import java.util.UUID;
+import java.time.Instant;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +38,7 @@ public class LoginServletTest {
   private HttpServletRequest mockRequest;
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
+  private static UserStore userStore;
 
   @Before
   public void setup() {
@@ -46,7 +50,7 @@ public class LoginServletTest {
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/login.jsp"))
         .thenReturn(mockRequestDispatcher);
     //TODO make a user and a usertore to be used in this class for test because we need existing users for the existing user do post test
-    //User user = new User()
+    
   }
 
   @Test
@@ -58,17 +62,26 @@ public class LoginServletTest {
 
   
 
-
   @Test
   public void testDoPost_ExistingUser() throws IOException, ServletException {
+
+  	UUID userID = new UUID(0, 123456789);
+    Instant instant = Instant.MIN;
+    User user = new User(userID, "test username", "test username", instant);
+    userStore =  UserStore.getInstance();
+    userStore.addUser(user);
+
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
 
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
+    UserStore mockUserStore = userStore;
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
+    
+    Mockito.when(userStore.getUser("test username")).thenReturn(user);
+
     //Mockito.when(mockUserStore.password.equals(user.getPassword())).thenReturn(true);
     
-    loginServlet.setUserStore(mockUserStore);
+    loginServlet.setUserStore(userStore);
 
     HttpSession mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
