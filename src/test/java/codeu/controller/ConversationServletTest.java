@@ -90,8 +90,8 @@ public class ConversationServletTest {
 
   @Test
   public void testDoPost_InvalidUser() throws IOException, ServletException {
-    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
-    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(null);
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("testusername");
+    Mockito.when(mockUserStore.getUser("testusername")).thenReturn(null);
 
     conversationServlet.doPost(mockRequest, mockResponse);
 
@@ -103,10 +103,10 @@ public class ConversationServletTest {
   @Test
   public void testDoPost_BadConversationName() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("bad !@#$% name");
-    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("testusername");
 
-    User fakeUser = new User(UUID.randomUUID(), "test_username", "test password", Instant.now());
-    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    User fakeUser = new User(UUID.randomUUID(), "testusername", "testpassword", Instant.now());
+    Mockito.when(mockUserStore.getUser("testusername")).thenReturn(fakeUser);
 
     conversationServlet.doPost(mockRequest, mockResponse);
 
@@ -119,10 +119,10 @@ public class ConversationServletTest {
   @Test
   public void testDoPost_ConversationNameTaken() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_conversation");
-    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("testusername");
 
-    User fakeUser = new User(UUID.randomUUID(), "test_username", "test password", Instant.now());
-    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    User fakeUser = new User(UUID.randomUUID(), "testusername", "testpassword", Instant.now());
+    Mockito.when(mockUserStore.getUser("testusername")).thenReturn(fakeUser);
 
     Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(true);
 
@@ -136,10 +136,10 @@ public class ConversationServletTest {
   @Test
   public void testDoPost_NewConversation() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_conversation");
-    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("testusername");
 
-    User fakeUser = new User(UUID.randomUUID(), "test_username", "test password", Instant.now());
-    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+    User fakeUser = new User(UUID.randomUUID(), "testusername", "testpassword", Instant.now());
+    Mockito.when(mockUserStore.getUser("testusername")).thenReturn(fakeUser);
 
     Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(false);
 
