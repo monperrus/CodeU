@@ -24,6 +24,7 @@ public class RegisterServletTest {
  private HttpServletRequest mockRequest;
  private HttpServletResponse mockResponse;
  private RequestDispatcher mockRequestDispatcher;
+ private String password;
 
  @Before
  public void setup() {
@@ -48,6 +49,8 @@ public class RegisterServletTest {
    Mockito.when(mockRequest.getParameter("password")).thenReturn(BCrypt.hashpw("testpassword", BCrypt.gensalt()));
    
    UserStore mockUserStore = Mockito.mock(UserStore.class);
+  
+   password = BCrypt.hashpw("testpassword", BCrypt.gensalt());
    
    Mockito.when(mockUserStore.isUserRegistered("testusername")).thenReturn(false);
    registerServlet.setUserStore(mockUserStore);
@@ -62,7 +65,7 @@ public class RegisterServletTest {
 
    Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
    Assert.assertEquals(userArgumentCaptor.getValue().getName(), "testusername");
-   Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "testpassword");
+   Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), password);
 
    Mockito.verify(mockResponse).sendRedirect("/login");
  }
