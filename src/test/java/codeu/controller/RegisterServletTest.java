@@ -62,7 +62,7 @@ public class RegisterServletTest {
 
    Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
    Assert.assertEquals(userArgumentCaptor.getValue().getName(), "testusername");
-   //Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "testpassword");
+   Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "testpassword");
 
    Mockito.verify(mockResponse).sendRedirect("/login");
  }
