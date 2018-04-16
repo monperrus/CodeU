@@ -45,8 +45,9 @@ public class RegisterServletTest {
  
  @Test
  public void testDoPost_NewUser() throws IOException, ServletException {
+   password = BCrypt.hashpw("testpassword", BCrypt.gensalt());
    Mockito.when(mockRequest.getParameter("username")).thenReturn("testusername");
-   Mockito.when(mockRequest.getParameter("password")).thenReturn(BCrypt.hashpw("testpassword", BCrypt.gensalt()));
+   Mockito.when(mockRequest.getParameter("password")).thenReturn(password);
    
    UserStore mockUserStore = Mockito.mock(UserStore.class);
   
