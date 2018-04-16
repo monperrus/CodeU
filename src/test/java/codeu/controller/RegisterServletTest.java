@@ -50,9 +50,7 @@ public class RegisterServletTest {
    Mockito.when(mockRequest.getParameter("password")).thenReturn(password);
    
    UserStore mockUserStore = Mockito.mock(UserStore.class);
-  
-   password = BCrypt.hashpw("testpassword", BCrypt.gensalt());
-   
+    
    Mockito.when(mockUserStore.isUserRegistered("testusername")).thenReturn(false);
    registerServlet.setUserStore(mockUserStore);
 
