@@ -68,7 +68,7 @@ public class LoginServletTest {
   public void testDoPost_BadPassword() throws IOException, ServletException {
 
     Mockito.when(mockRequest.getParameter("username")).thenReturn("testusername");
-    Mockito.when(mockRequest.getParameter("password")).thenReturn(BCrypt.hashpw("testpassword", BCrypt.gensalt()));
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword");
 
     user = Mockito.mock(User.class);
     
@@ -78,7 +78,7 @@ public class LoginServletTest {
     loginServlet.setUserStore(userStore);
     
     Mockito.when(userStore.getUser("testusername")).thenReturn(user);
-    Mockito.when(user.getPassword()).thenReturn(BCrypt.hashpw("nottestpassword", BCrypt.gensalt()));
+    Mockito.when(user.getPassword()).thenReturn("testpassword");
 
 
     //HttpSession mockSession = Mockito.mock(HttpSession.class);
