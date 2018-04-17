@@ -91,12 +91,12 @@ public class LoginServletTest {
     Mockito.verify(mockRequest).setAttribute("error", "Invalid password.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  /*
+ 
   @Test
   public void testDoPost_BadUser() throws IOException, ServletException {
 
     Mockito.when(mockRequest.getParameter("username")).thenReturn("testusername");
-    Mockito.when(mockRequest.getParameter("password")).thenReturn(BCrypt.hashpw("testpassword", BCrypt.gensalt()));
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword");
 
     user = Mockito.mock(User.class);
     
@@ -113,5 +113,32 @@ public class LoginServletTest {
     Mockito.verify(mockRequest).setAttribute("error", "That username was not found.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  */
+  
+  @Test	
+  public void testDoPost_ExistingUser() throws IOException, ServletException {	
+	
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("testusername");	
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword");	
+	
+    user = Mockito.mock(User.class);	
+    	
+    userStore = Mockito.mock(UserStore.class);	
+    Mockito.when(userStore.isUserRegistered("testusername")).thenReturn(true);	
+        	
+    loginServlet.setUserStore(userStore);	
+    	
+    Mockito.when(userStore.getUser("testusername")).thenReturn(user);	
+    Mockito.when(user.getPassword()).thenReturn("testpassword");	
+	
+	
+    HttpSession mockSession = Mockito.mock(HttpSession.class);	
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);	
+	
+    loginServlet.doPost(mockRequest, mockResponse);	
+	
+    Mockito.verify(userStore, Mockito.never()).addUser(Mockito.any(User.class));	
+	
+    Mockito.verify(mockSession).setAttribute("user", "testusername");	
+    Mockito.verify(mockResponse).sendRedirect("/conversations");	
+  }
 }
