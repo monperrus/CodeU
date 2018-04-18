@@ -43,6 +43,9 @@ public class LoginServletTest {
   private RequestDispatcher mockRequestDispatcher;
   private UserStore userStore;
   private User user;
+  private static final String USERNAME = "test_username";
+  private static final String PASSWORD = "test_password";
+  
 
   @Before
   public void setup() {
@@ -67,22 +70,22 @@ public class LoginServletTest {
   @Test
   public void testDoPost_BadPassword() throws IOException, ServletException {
 
-    Mockito.when(mockRequest.getParameter("username")).thenReturn("testusername");
-    Mockito.when(mockRequest.getParameter("password")).thenReturn(BCrypt.hashpw("testpassword", BCrypt.gensalt()));
+    Mockito.when(mockRequest.getParameter("username")).thenReturn(USERNAME);
+    Mockito.when(mockRequest.getParameter("password")).thenReturn(PASSWORD);
 
     user = Mockito.mock(User.class);
     
     userStore = Mockito.mock(UserStore.class);
-    Mockito.when(userStore.isUserRegistered("testusername")).thenReturn(true);
+    Mockito.when(userStore.isUserRegistered(USERNAME)).thenReturn(true);
         
     loginServlet.setUserStore(userStore);
     
-    Mockito.when(userStore.getUser("testusername")).thenReturn(user);
-    Mockito.when(user.getPassword()).thenReturn(BCrypt.hashpw("nottestpassword", BCrypt.gensalt()));
+    Mockito.when(userStore.getUser(USERNAME)).thenReturn(user);
+    Mockito.when(user.getPassword()).thenReturn(BCrypt.hashpw("bad_password", BCrypt.gensalt()));
 
 
-    //HttpSession mockSession = Mockito.mock(HttpSession.class);
-   // Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
     loginServlet.doPost(mockRequest, mockResponse);
 
@@ -91,27 +94,54 @@ public class LoginServletTest {
     Mockito.verify(mockRequest).setAttribute("error", "Invalid password.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  /*
+ 
   @Test
   public void testDoPost_BadUser() throws IOException, ServletException {
 
-    Mockito.when(mockRequest.getParameter("username")).thenReturn("testusername");
-    Mockito.when(mockRequest.getParameter("password")).thenReturn(BCrypt.hashpw("testpassword", BCrypt.gensalt()));
+    Mockito.when(mockRequest.getParameter("username")).thenReturn(USERNAME);
+    Mockito.when(mockRequest.getParameter("password")).thenReturn(PASSWORD);
 
     user = Mockito.mock(User.class);
     
     userStore = Mockito.mock(UserStore.class);
-    Mockito.when(userStore.isUserRegistered("testusername")).thenReturn(false);
+    Mockito.when(userStore.isUserRegistered(USERNAME)).thenReturn(false);
         
     loginServlet.setUserStore(userStore);
   
-    //HttpSession mockSession = Mockito.mock(HttpSession.class);
-    //Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
     loginServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockRequest).setAttribute("error", "That username was not found.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  */
+  
+  @Test	
+  public void testDoPost_ExistingUser() throws IOException, ServletException {	
+	
+    Mockito.when(mockRequest.getParameter("username")).thenReturn(USERNAME);	
+    Mockito.when(mockRequest.getParameter("password")).thenReturn(PASSWORD);	
+	
+    user = Mockito.mock(User.class);	
+    	
+    userStore = Mockito.mock(UserStore.class);	
+    Mockito.when(userStore.isUserRegistered(USERNAME)).thenReturn(true);	
+        	
+    loginServlet.setUserStore(userStore);	
+    	
+    Mockito.when(userStore.getUser(USERNAME)).thenReturn(user);	
+    Mockito.when(user.getPassword()).thenReturn(BCrypt.hashpw(PASSWORD, BCrypt.gensalt()));
+	
+	
+    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+	
+    loginServlet.doPost(mockRequest, mockResponse);	
+	
+    Mockito.verify(userStore, Mockito.never()).addUser(Mockito.any(User.class));	
+	
+    Mockito.verify(mockSession).setAttribute("user", USERNAME);	
+    Mockito.verify(mockResponse).sendRedirect("/conversations");	
+  }
 }
