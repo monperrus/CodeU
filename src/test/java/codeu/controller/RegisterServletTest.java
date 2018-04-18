@@ -1,6 +1,7 @@
 package codeu.controller;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mindrot.jbcrypt.*;
 
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
@@ -21,7 +23,9 @@ public class RegisterServletTest {
  private RegisterServlet registerServlet;
  private HttpServletRequest mockRequest;
  private HttpServletResponse mockResponse;
- private RequestDispatcher mockRequestDispatcher;
+  private RequestDispatcher mockRequestDispatcher;
+  private static final String USERNAME = "test_username";
+  private static final String PASSWORD = "test_password";
 
  @Before
  public void setup() {
@@ -42,12 +46,12 @@ public class RegisterServletTest {
  
  @Test
  public void testDoPost_NewUser() throws IOException, ServletException {
-   Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
-   Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
+   Mockito.when(mockRequest.getParameter("username")).thenReturn(USERNAME);
+   Mockito.when(mockRequest.getParameter("password")).thenReturn(PASSWORD);
    
    UserStore mockUserStore = Mockito.mock(UserStore.class);
-   
-   Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
+    
+   Mockito.when(mockUserStore.isUserRegistered(USERNAME)).thenReturn(false);
    registerServlet.setUserStore(mockUserStore);
 
    HttpSession mockSession = Mockito.mock(HttpSession.class);
@@ -59,8 +63,8 @@ public class RegisterServletTest {
    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
 
    Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
-   Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
-   Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "test password");
+   Assert.assertEquals(userArgumentCaptor.getValue().getName(), USERNAME);
+   Assert.assertTrue(BCrypt.checkpw(PASSWORD, userArgumentCaptor.getValue().getPassword()));
 
    Mockito.verify(mockResponse).sendRedirect("/login");
  }
