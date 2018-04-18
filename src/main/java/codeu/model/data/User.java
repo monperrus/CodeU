@@ -23,6 +23,7 @@ public class User {
   private final String name;
   private final String password;
   private final Instant creation;
+  public ProfilePage profile;
 
   /**
    * Constructs a new User.
@@ -37,6 +38,7 @@ public class User {
     this.name = name;
     this.password = password;
     this.creation = creation;
+    profile = new ProfilePage(this);
   }
 
   /** Returns the ID of this User. */
@@ -57,5 +59,10 @@ public class User {
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+  
+  /** Returns the Profile Page of this User. */
+  public ProfilePage getProfilePage() {
+    return profile;
   }
 }

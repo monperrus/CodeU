@@ -19,7 +19,6 @@ public class ProfilePage {
 		this.user = user;
 		name = user.getName();
 		recentConvos = new ArrayList<Conversation>();
-		//return user;
 	}
 	
 	/**Returns the name of the user whose ProfilePage this is*/
