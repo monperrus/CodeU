@@ -86,6 +86,11 @@ public class MessageStore {
   public void addMessage(Message message) {
     messages.add(message);
     persistentStorageAgent.writeThrough(message);
+    
+    UserStore instance = UserStore.getInstance();
+    User user = instance.getUser(message.getAuthorId());
+    ProfilePage profie = user.getProfilePage();
+    profile.addMessage(message);
   }
 
   /** Access the current set of Messages within the given Conversation. */
