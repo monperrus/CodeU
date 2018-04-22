@@ -50,5 +50,10 @@ public class ProfilePage {
 	public void setRecentConvos(ArrayList<Conversation> recentConvos) {
 		this.recentConvos = recentConvos;
 	}
+	
+	/**Adds a Message to the list of recent conversations*/
+	public void addMessage(Message message){
+		recentConvos.add(message);
+	}
 
 }
