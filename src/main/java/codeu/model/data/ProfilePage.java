@@ -52,8 +52,8 @@ public class ProfilePage {
 	}
 	
 	/**Adds a Message to the list of recent conversations*/
-	public void addMessage(Message message){
-		recentConvos.add(message);
+	public void addMessage(Conversation conversation){
+		recentConvos.add(conversation);
 	}
 
 }
