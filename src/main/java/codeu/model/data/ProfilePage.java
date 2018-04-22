@@ -5,11 +5,11 @@ import java.util.UUID;
 
 public class ProfilePage {
 	
-	String aboutMe;
-	String name;
-	User user;
-	UUID userID;
-	ArrayList<Conversation> recentConvos; 
+	private String aboutMe;
+	private String name;
+	private User user;
+	private UUID userID;
+	private ArrayList<Conversation> recentConvos; 
 
 	/**
 	 * Constructs a new Profile Page for a specific user
@@ -18,6 +18,7 @@ public class ProfilePage {
 	public ProfilePage(User user){
 		this.user = user;
 		name = user.getName();
+		this.userID = user.getId();
 		recentConvos = new ArrayList<Conversation>();
 	}
 	
