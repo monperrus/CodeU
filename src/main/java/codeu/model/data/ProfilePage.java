@@ -36,6 +36,11 @@ public class ProfilePage {
 	public String getAboutMe() {
 		return aboutMe;
 	}
+
+	/**Returns the user of this profile page*/
+	public User getUser() {
+		return user;
+	}
 	
 	/**Sets the "about me" of the user whose ProfilePage this is*/
 	public void setAboutMe(String aboutMe) {

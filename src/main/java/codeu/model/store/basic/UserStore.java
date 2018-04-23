@@ -30,10 +30,6 @@ public class UserStore {
   /** Singleton instance of UserStore. */
   private static UserStore instance;
 
-  /**
-   * Returns the singleton instance of UserStore that should be shared between all servlet classes.
-   * Do not call this function from a test; use getTestInstance() instead.
-   */
   public static UserStore getInstance() {
     if (instance == null) {
       instance = new UserStore(PersistentStorageAgent.getInstance());
