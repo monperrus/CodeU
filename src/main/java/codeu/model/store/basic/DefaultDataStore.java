@@ -17,6 +17,7 @@ package codeu.model.store.basic;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.ProfilePage;
 import codeu.model.store.persistence.PersistentStorageAgent;
 
 import java.time.Instant;
@@ -55,6 +56,8 @@ public class DefaultDataStore {
    */
   private int DEFAULT_MESSAGE_COUNT = 100;
 
+  private int DEFAULT_PROFILE_COUNT = 10;
+
   private static DefaultDataStore instance = new DefaultDataStore();
 
   public static DefaultDataStore getInstance() {
@@ -64,17 +67,20 @@ public class DefaultDataStore {
   private List<User> users;
   private List<Conversation> conversations;
   private List<Message> messages;
+  private List<ProfilePage> profilepages;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private DefaultDataStore() {
     users = new ArrayList<>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
+    profilepages = new ArrayList<>();
 
     if (USE_DEFAULT_DATA) {
       addRandomUsers();
       addRandomConversations();
       addRandomMessages();
+      addRandomProfiles();
     }
   }
 
@@ -92,6 +98,10 @@ public class DefaultDataStore {
 
   public List<Message> getAllMessages() {
     return messages;
+  }
+
+  public List<ProfilePage> getAllProfiles() {
+    return profilepages;
   }
 
   private void addRandomUsers() {
@@ -126,6 +136,18 @@ public class DefaultDataStore {
               UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
       messages.add(message);
+    }
+  }
+
+  private void addRandomProfiles() {
+    for (int i = 0; i < DEFAULT_PROFILE_COUNT; i++) {
+      ProfilePage profilepage = getRandomElement(profilepages);
+      User author = getRandomElement(users);
+      String content = getRandomMessageContent();
+
+      ProfilePage profile = new ProfilePage(author);
+      PersistentStorageAgent.getInstance().writeThrough(profile);
+      profilepages.add(profile);
     }
   }
 

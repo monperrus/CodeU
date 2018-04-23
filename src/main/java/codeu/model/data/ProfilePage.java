@@ -9,7 +9,7 @@ public class ProfilePage {
 	private String name;
 	private User user;
 	private UUID userID;
-	private ArrayList<Conversation> recentConvos; 
+	private ArrayList<Message> recentConvos; 
 
 	/**
 	 * Constructs a new Profile Page for a specific user
@@ -19,7 +19,7 @@ public class ProfilePage {
 		this.user = user;
 		name = user.getName();
 		this.userID = user.getId();
-		recentConvos = new ArrayList<Conversation>();
+		recentConvos = new ArrayList<Message>();
 	}
 	
 	/**Returns the name of the user whose ProfilePage this is*/
@@ -36,6 +36,11 @@ public class ProfilePage {
 	public String getAboutMe() {
 		return aboutMe;
 	}
+
+	/**Returns the user of this profile page*/
+	public User getUser() {
+		return user;
+	}
 	
 	/**Sets the "about me" of the user whose ProfilePage this is*/
 	public void setAboutMe(String aboutMe) {
@@ -43,18 +48,18 @@ public class ProfilePage {
 	}
 	
 	/**Returns the recent conversations of the user whose ProfilePage this is*/
-	public ArrayList<Conversation> getRecentConvos() {
+	public ArrayList<Message> getRecentConvos() {
 		return recentConvos;
 	}
 
 	/**Sets the recent conversations of the user whose ProfilePage this is*/
-	public void setRecentConvos(ArrayList<Conversation> recentConvos) {
+	public void setRecentConvos(ArrayList<Message> recentConvos) {
 		this.recentConvos = recentConvos;
 	}
 	
 	/**Adds a Message to the list of recent conversations*/
-	public void addMessage(Conversation conversation){
-		recentConvos.add(conversation);
+	public void addMessage(Message message){
+		recentConvos.add(message);
 	}
 
 }
