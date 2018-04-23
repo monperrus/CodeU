@@ -15,6 +15,8 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Message;
+import codeu.model.data.User;
+import codeu.model.data.ProfilePage;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,11 +83,16 @@ public class MessageStore {
     }
     return loaded;
   }
-
+  
   /** Add a new message to the current set of messages known to the application. */
   public void addMessage(Message message) {
-    messages.add(message);
-    persistentStorageAgent.writeThrough(message);
+      messages.add(message);
+      persistentStorageAgent.writeThrough(message);
+      
+      UserStore instance = UserStore.getInstance();
+      User user = instance.getUser(message.getAuthorId());
+      ProfilePage profile = user.getProfilePage();
+      profile.addMessage(message);
   }
 
   /** Access the current set of Messages within the given Conversation. */
