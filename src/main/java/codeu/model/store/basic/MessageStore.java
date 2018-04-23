@@ -89,7 +89,7 @@ public class MessageStore {
     
     UserStore instance = UserStore.getInstance();
     User user = instance.getUser(message.getAuthorId());
-    ProfilePage profie = user.getProfilePage();
+    ProfilePage profile = user.getProfilePage();
     profile.addMessage(message);
   }
 
